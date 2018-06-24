@@ -42,15 +42,19 @@ class Search extends Component {
       <div className="search-books-bar">
         <Link className="close-search" to='/'>Close</Link>
         <div className="search-books-input-wrapper">
-          <input type="text" placeholder="Search by title or author" value={this.state.query} onChange={this.handleSearch} />
+          <input
+            type="text"
+            placeholder="Search by title or author"
+            value={this.state.query}
+            onChange={this.handleSearch} />
         </div>
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
           {this.state.results.length ?
             this.state.results.map((book) =>
-              (<Book key={book.id} book={ this.state.booksMap[book.id] || book} updateBooks={this.props.updateBooks} />)) : (<li className="no-results">No Results</li>)
-          }
+              (<Book key={book.id} book={this.state.booksMap[book.id] || book} updateBooks={this.props.updateBooks} />))
+            : (<li className="no-results">No Results</li>)}
         </ol>
       </div>
     </div>
