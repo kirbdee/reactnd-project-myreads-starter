@@ -172,3 +172,16 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+/* custom */
+.book-cover p {
+  text-align: center;
+  margin-top: 50%;
+  font-weight: bold;
+  color: gray;
+}
+
+.books-grid .no-results {
+  font-weight: bold;
+  color: gray;
+}
