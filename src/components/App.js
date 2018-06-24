@@ -4,7 +4,7 @@ import 'components/App.css';
 import Search from 'components/Search';
 import BookList from './BookList';
 import { Switch, Route } from 'react-router-dom';
-
+import NotFound from 'NotFound';
 
 class BooksApp extends React.Component {
   state = {
@@ -29,12 +29,13 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Switch>
-          <Route path='/search' render={_ =>
+          <Route exact path='/search' render={_ =>
             <Search books={this.state.books} updateBooks={this.updateBooks} />
           } />
-          <Route path='/' render={_ =>
+          <Route exact path='/' render={_ =>
             <BookList books={this.state.books} updateBooks={this.updateBooks} />
           } />
+          <Route component={NotFound}/>
         </Switch>
       </div>
     )

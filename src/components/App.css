@@ -185,3 +185,14 @@ body, .app {
   font-weight: bold;
   color: gray;
 }
+
+.bookshelf.drop-highlight {
+  opacity: .5;
+  background-color: lightblue;
+}
+
+.books-grid li:hover {
+  opacity: .5;
+  background-color: lightblue;
+  cursor: move;
+}

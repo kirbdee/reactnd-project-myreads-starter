@@ -6,8 +6,13 @@ const Book = (props) => {
 
   const handleChange = (e) => props.updateBooks(props.book, e.target.value);
 
+  const onDragStart = (e) => {
+    console.log(e)
+    e.dataTransfer.setData('book',JSON.stringify(props.book));
+  };
+
   return (
-    <li>
+    <li draggable="true" onDragStart={onDragStart}>
       <div className="book">
         <div className="book-top">
           <div
