@@ -1,32 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class Book extends Component {
-  state = {
-    authors: this.props.authors || [],
-    cover: this.props.imageLinks ? this.props.imageLinks.thumbnail || '' : '',
-    title: this.props.title || '',
-    shelf: this.props.shelf || 'none'
-  }
+const Book = (props) => {
+  const { authors = [], imageLinks = '', title = '', shelf = 'none' } = props.book;
 
-  handleChange = (e) => {
-    console.log(e.target.value)
-    //TODO set and add book if value is not 'none'
-  };
+  const handleChange = (e) => props.updateBooks(props.book, e.target.value);
 
-  render = () => (
+  return (
     <li>
       <div className="book">
         <div className="book-top">
-          <div 
-            className="book-cover" 
-            style={{ 
+          <div
+            className="book-cover"
+            style={{
               width: 128,
               height: 193,
-              backgroundImage: `url("${this.state.cover}")` }}>
-              {!this.state.cover ? <p>Image Not Available</p> : null}
+              backgroundImage: `url("${imageLinks.thumbnail || null}")`
+            }}>
+            {!imageLinks.thumbnail ? <p>Cover Not Available</p> : null}
           </div>
           <div className="book-shelf-changer">
-            <select value={this.state.shelf} onChange={this.handleChange}>
+            <select value={shelf} onChange={handleChange}>
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -35,13 +29,17 @@ class Book extends Component {
             </select>
           </div>
         </div>
-        <div className="book-title">{this.state.title}</div>
-        {this.state.authors.map((author) => (<div key={author} className="book-authors">{author}</div>))}
-        
+        <div className="book-title">{title}</div>
+        {authors.map((author) => (<div key={author} className="book-authors">{author}</div>))}
+
       </div>
     </li>
   );
+}
 
+Book.propTypes = {
+  book: PropTypes.object.isRequired,
+  updateBooks: PropTypes.func.isRequired,
 }
 
 export default Book;

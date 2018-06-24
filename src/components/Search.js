@@ -12,40 +12,44 @@ class Search extends Component {
 
   state = {
     query: '',
-    results: []
+    results: [],
+    booksMap: this.props.books.reduce((map, book) => Object.assign(map, { [book.id]: book }), {})
   };
 
-  //TODO: handle 403 properly
-  searchBook = (query) => {
-    this.setState( _ => ({
-      query: query || ''
-    }), _ => {
-      BooksAPI.search(this.state.query).then((results)=>{
-        console.log(results);
-        this.setState( _ => ({
-          results: !results || results.error ? [] : results
-        }));
-      })
-    });
-  };
+  setResults = (results = []) => new Promise((resolve) => {
+    //TODO if results is on shelf
+    this.setState(_ => ({
+      results
+    }), resolve(this.state.results))
+  });
 
-  handleSearch = (e) => {
-    this.searchBook(e.target.value);
-  };
+  setQuery = (query = '') => new Promise((resolve) =>
+    this.setState(_ => ({
+      query
+    }), () => resolve(this.state.query)));
+
+  searchBooks = (query = '') =>
+    BooksAPI.search(this.state.query)
+      .then((results) =>
+        this.setResults(!results || results.error ? [] : results)
+      );
+
+  handleSearch = (e) =>
+    this.setQuery(e.target.value).then(query => query ? this.searchBooks(query) : this.setResults());
 
   render = _ => (
     <div className="search-books">
       <div className="search-books-bar">
         <Link className="close-search" to='/'>Close</Link>
         <div className="search-books-input-wrapper">
-          <input type="text" placeholder="Search by title or author" value={this.state.query} onChange={this.handleSearch}/>
+          <input type="text" placeholder="Search by title or author" value={this.state.query} onChange={this.handleSearch} />
         </div>
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
-          { this.state.results.length ? 
-              this.state.results.map((book) => 
-                (<Book key={book.id} {...book} />)) : (<li className="no-results">No Results</li>) 
+          {this.state.results.length ?
+            this.state.results.map((book) =>
+              (<Book key={book.id} book={ this.state.booksMap[book.id] || book} updateBooks={this.props.updateBooks} />)) : (<li className="no-results">No Results</li>)
           }
         </ol>
       </div>
